@@ -75,7 +75,7 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
@@ -85,9 +85,26 @@
                 "input": "public"
               }
             ],
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "styles": [
               "src/styles.scss"
             ]
+          }
+        },
+        
+
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "my-angular-prototype-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "my-angular-prototype-app:serve:production"
+            }
           }
         }
       }
