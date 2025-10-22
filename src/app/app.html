@@ -7,7 +7,7 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-<style>
+<!--<style>
   :host {
     --bright-blue: oklch(51.01% 0.274 263.83);
     --electric-violet: oklch(53.18% 0.28 296.97);
@@ -328,7 +328,7 @@
       </div>
     </div>
   </div>
-</main>
+</main>-->
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
@@ -338,5 +338,71 @@
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
+<div class="container">
+  <h1>{{ title }}</h1>
+  
+  <div class="code-input-section">
+    <h2>Submit Code for Review</h2>
+    
+    <div class="language-selector">
+      <label for="language">Programming Language:</label>
+      <select id="language" [(ngModel)]="language" (change)="onLanguageChange(language)">
+        <option value="java">Java</option>
+        <option value="python">Python</option>
+        <option value="javascript">JavaScript</option>
+        <option value="typescript">TypeScript</option>
+      </select>
+    </div>
 
-<router-outlet />
+    <textarea 
+      [(ngModel)]="code" 
+      placeholder="Paste your code here..." 
+      rows="15"
+      class="code-textarea">
+    </textarea>
+
+    <button (click)="onSubmit()" [disabled]="loading" class="submit-btn">
+      {{ loading ? 'Submitting...' : 'Submit for Review' }}
+    </button>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="loading">
+    Analyzing your code...
+  </div>
+
+  <!-- Results Section -->
+  <div *ngIf="reviewResult" class="results-section">
+    <h2>Code Review Results</h2>
+    
+    <div class="summary">
+      <h3>Summary</h3>
+      <p>{{ reviewResult.summary }}</p>
+    </div>
+
+    <div class="issues" *ngIf="reviewResult.issues && reviewResult.issues.length > 0">
+      <h3>Issues Found</h3>
+      <div *ngFor="let issue of reviewResult.issues" class="issue" [class]="'severity-' + issue.severity.toLowerCase()">
+        <div class="issue-header">
+          <span class="line">Line {{ issue.line }}</span>
+          <span class="severity">{{ issue.severity }}</span>
+        </div>
+        <div class="issue-message">{{ issue.message }}</div>
+        <div class="issue-suggestion" *ngIf="issue.suggestion">
+          <strong>Suggestion:</strong> {{ issue.suggestion }}
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!reviewResult.issues || reviewResult.issues.length === 0" class="no-issues">
+      <p>No issues found! Your code looks good.</p>
+    </div>
+  </div>
+</div>
+
+<!--<router-outlet />-->
