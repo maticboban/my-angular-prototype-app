@@ -1,0 +1,16 @@
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+export class DebugInterceptor implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log('HTTP Request:', req.method, req.url, req.body);
+    
+    return next.handle(req).pipe(
+      tap(
+        event => console.log('HTTP Response:', event),
+        error => console.error('HTTP Error:', error)
+      )
+    );
+  }
+}

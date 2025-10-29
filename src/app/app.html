@@ -367,42 +367,54 @@
   </div>
 
   <!-- Error Message -->
-  <div *ngIf="error" class="error-message">
-    {{ error }}
-  </div>
+  @if (error) {
+    <div class="error-message">
+      {{ error }}
+    </div>
+  }
 
   <!-- Loading Indicator -->
-  <div *ngIf="loading" class="loading">
-    Analyzing your code...
-  </div>
+  @if (loading) {
+    <div class="loading">
+      Analyzing your code...
+    </div>
+  }
 
   <!-- Results Section -->
-  <div *ngIf="reviewResult" class="results-section">
-    <h2>Code Review Results</h2>
-    
-    <div class="summary">
-      <h3>Summary</h3>
-      <p>{{ reviewResult.summary }}</p>
-    </div>
-
-    <div class="issues" *ngIf="reviewResult.issues && reviewResult.issues.length > 0">
-      <h3>Issues Found</h3>
-      <div *ngFor="let issue of reviewResult.issues" class="issue" [class]="'severity-' + issue.severity.toLowerCase()">
-        <div class="issue-header">
-          <span class="line">Line {{ issue.line }}</span>
-          <span class="severity">{{ issue.severity }}</span>
-        </div>
-        <div class="issue-message">{{ issue.message }}</div>
-        <div class="issue-suggestion" *ngIf="issue.suggestion">
-          <strong>Suggestion:</strong> {{ issue.suggestion }}
-        </div>
+  @if (reviewResult) { 
+    <div class="results-section">
+      <h2>Code Review Results</h2>
+      
+      <div class="summary">
+        <h3>Summary</h3>
+        <p>{{ reviewResult.summary }}</p>
       </div>
-    </div>
 
-    <div *ngIf="!reviewResult.issues || reviewResult.issues.length === 0" class="no-issues">
-      <p>No issues found! Your code looks good.</p>
+      @if (reviewResult.issues && reviewResult.issues.length > 0) { 
+        <div class="issues">
+          <h3>Issues Found</h3>
+          <div *ngFor="let issue of reviewResult.issues" class="issue" [class]="'severity-' + issue.severity.toLowerCase()">
+            <div class="issue-header">
+              <span class="line">Line {{ issue.line }}</span>
+              <span class="severity">{{ issue.severity }}</span>
+            </div>
+            <div class="issue-message">{{ issue.message }}</div>
+            @if (issue.suggestion) { 
+              <div class="issue-suggestion">
+                <strong>Suggestion:</strong> {{ issue.suggestion }}
+              </div>
+            }  
+          </div>
+        </div>
+      }
+
+      @if (!reviewResult.issues || reviewResult.issues.length === 0) { 
+        <div class="no-issues">
+          <p>No issues found! Your code looks good.</p>
+        </div>
+      }
     </div>
-  </div>
+  }
 </div>
 
 <!--<router-outlet />-->

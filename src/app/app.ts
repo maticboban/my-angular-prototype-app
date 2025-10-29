@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms'; // ← IMPORT FormsModule
   styleUrls: ['./app.scss']
 })
 export class App implements OnInit {
+  
   title = 'Code Review App'; //protected readonly title = signal('my-angular-prototype-app');
   code: string = '';
   language: string = 'java';
@@ -23,7 +24,7 @@ export class App implements OnInit {
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    //throw new Error('Method not implemented.');
     //this.loadUsers();
   }
 
