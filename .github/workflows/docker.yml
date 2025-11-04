@@ -8,8 +8,6 @@ on:
 
 env:
   IMAGE_NAME: my-angular-app
-  DOCKERHUB_USERNAME: bagljas86
-  DOCKERHUB_TOKEN: dckr_pat_5LhbhA2jugRnEV5495Wb-fNeFy8
 
 jobs:
   build:
@@ -51,14 +49,14 @@ jobs:
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
       with:
-        username: ${{ env.DOCKERHUB_USERNAME }}
-        password: ${{ env.DOCKERHUB_TOKEN }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Extract metadata
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+        images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
         tags: |
           type=ref,event=branch
           type=sha,prefix={{branch}}-
